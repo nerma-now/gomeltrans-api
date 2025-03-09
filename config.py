@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -28,6 +28,9 @@ class ApplicationConfig(BaseModel):
     swagger: SwaggerConfig = SwaggerConfig()
     api: APIConfig = APIConfig()
 
+class GomeltransConfig(BaseModel):
+    base_url: HttpUrl = Field(default='https://gomeltrans.net/')
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file='.env',
@@ -36,6 +39,7 @@ class Settings(BaseSettings):
         env_prefix='CONFIG__',
     )
 
+    gomeltrans: GomeltransConfig = GomeltransConfig()
     app: ApplicationConfig = ApplicationConfig()
 
 settings: Settings = Settings()
