@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from config import settings
-from .test import router as test_router
+from .get_route_stops import router as get_route_stops_router
 
 
 router: APIRouter = APIRouter(
     prefix=settings.app.api.v1.prefix,
 )
-router.include_router(test_router)
+router.include_router(get_route_stops_router)
