@@ -1,6 +1,9 @@
+from pathlib import Path
 from pydantic import BaseModel, Field, HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
+BASE_DIR = Path(__file__).resolve().parent
 
 class V1Config(BaseModel):
     prefix: str = Field(default='/v1')
@@ -11,12 +14,15 @@ class APIConfig(BaseModel):
     v1: V1Config = V1Config()
 
 class DocsConfig(BaseModel):
-    prefix: str = Field(default='/docs')
+    title: str = Field(default='Swagger UI')
 
 class RedocConfig(BaseModel):
-    prefix: str = Field(default='/redoc')
+    title: str = Field(default='ReDoc')
 
 class SwaggerConfig(BaseModel):
+    static_path: str = Field(default='/src/swagger/static/')
+    mount_path: str = Field(default='src/swagger/static')
+
     docs: DocsConfig = DocsConfig()
     redoc: RedocConfig = RedocConfig()
 
@@ -33,7 +39,7 @@ class GomeltransConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file='.env',
+        env_file=BASE_DIR/'.env',
         case_sensitive=False,
         env_nested_delimiter='__',
         env_prefix='CONFIG__',
