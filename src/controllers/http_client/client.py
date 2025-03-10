@@ -2,8 +2,7 @@ from http import HTTPStatus
 from aiohttp import ClientSession
 from typing import Optional, Self
 from validators import url as url_validator
-from .exceptions import (HTTPClientException,
-                         UrlValidateException)
+from .exceptions import (UrlValidateException)
 
 
 class HTTPClient:
@@ -66,11 +65,8 @@ class HTTPClient:
                 'Invalid URL'
             )
 
-        try:
-            async with self.__session_getter().get(
-                    url=url
-            ) as get:
-                response: bytes = await get.read()
-                return response, HTTPStatus(get.status)
-        except Exception as e:
-            raise HTTPClientException(e)
+        async with self.__session_getter().get(
+                url=url
+        ) as get:
+            response: bytes = await get.read()
+            return response, HTTPStatus(get.status)
